@@ -1,0 +1,109 @@
+/* Design tokens. Everything visual derives from here. */
+:root {
+  --font-ui: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --font-display: 'Source Serif 4 Variable', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+
+  /* 4px spacing grid */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 20px;
+  --s6: 24px;
+  --s8: 32px;
+  --s10: 40px;
+
+  --r-xs: 6px;
+  --r-sm: 8px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 18px;
+
+  --gutter: 20px;
+  --nav-h: 56px;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --fast: 140ms;
+  --base: 220ms;
+
+  color-scheme: light;
+  --bg: #f5f3ee;
+  --surface: #ffffff;
+  --surface-2: #faf9f6;
+  --fill: rgba(28, 27, 25, 0.05);
+  --fill-2: rgba(28, 27, 25, 0.09);
+  --line: rgba(28, 27, 25, 0.09);
+  --line-2: rgba(28, 27, 25, 0.2);
+  --text: #1c1b19;
+  --text-2: #68655f;
+  --text-3: #9a968e;
+  --accent: #1f6b52;
+  --accent-soft: rgba(31, 107, 82, 0.1);
+  --on-accent: #ffffff;
+  --danger: #b4412f;
+  --danger-soft: rgba(180, 65, 47, 0.09);
+  --warn: #a8700f;
+  --info: #3f6695;
+  --scrim: rgba(28, 27, 25, 0.32);
+  --shadow-pop: 0 1px 2px rgba(28, 27, 25, 0.06), 0 8px 28px rgba(28, 27, 25, 0.12);
+  --shadow-knob: 0 1px 2px rgba(28, 27, 25, 0.18);
+  --toast-bg: #1c1b19;
+  --toast-text: #f5f3ee;
+
+  /* Colour markers for habits and goals */
+  --c-clay: #b5573a;
+  --c-ochre: #a9781c;
+  --c-olive: #6f7b2e;
+  --c-pine: #1f6b52;
+  --c-teal: #24737f;
+  --c-blue: #3f6695;
+  --c-plum: #84558d;
+  --c-graphite: #57554f;
+
+  /* Heatmap ramp: one hue, light to dark */
+  --heat-0: rgba(28, 27, 25, 0.06);
+  --heat-1: #c5dcd0;
+  --heat-2: #8fbda8;
+  --heat-3: #4f927a;
+  --heat-4: #1f6b52;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #131312;
+  --surface: #1b1b19;
+  --surface-2: #20201e;
+  --fill: rgba(255, 255, 255, 0.06);
+  --fill-2: rgba(255, 255, 255, 0.11);
+  --line: rgba(255, 255, 255, 0.08);
+  --line-2: rgba(255, 255, 255, 0.22);
+  --text: #edebe5;
+  --text-2: #a3a097;
+  --text-3: #73706a;
+  --accent: #63b792;
+  --accent-soft: rgba(99, 183, 146, 0.14);
+  --on-accent: #0d1f17;
+  --danger: #e2735e;
+  --danger-soft: rgba(226, 115, 94, 0.13);
+  --warn: #d7a445;
+  --info: #7ea6d6;
+  --scrim: rgba(0, 0, 0, 0.56);
+  --shadow-pop: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-knob: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --toast-bg: #edebe5;
+  --toast-text: #1c1b19;
+
+  --c-clay: #d98568;
+  --c-ochre: #d1a24a;
+  --c-olive: #a3ae5c;
+  --c-pine: #63b792;
+  --c-teal: #5fb0bb;
+  --c-blue: #7ea6d6;
+  --c-plum: #b98cc1;
+  --c-graphite: #a09d95;
+
+  --heat-0: rgba(255, 255, 255, 0.06);
+  --heat-1: #21372e;
+  --heat-2: #2f5a48;
+  --heat-3: #458a6c;
+  --heat-4: #63b792;
+}
