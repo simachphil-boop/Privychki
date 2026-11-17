@@ -4,6 +4,7 @@ import {
   type AppData, type CategoryId, type ColorId, type Goal, type Habit, type HabitLog, type Logs, type Reminder, type Schedule, type Task,
 } from '../store/types'
 import { isValidKey, isValidTime, todayKey } from './dates'
+import { isNative, nativeShareFile } from './native'
 import { isDone } from './schedule'
 
 const BACKUPS_KEY = 'dayflow:backups'
@@ -195,7 +196,9 @@ export function logsToCsv(data: AppData): string {
   return rows.map((r) => r.map(csvCell).join(',')).join('\n')
 }
 
-export function download(filename: string, text: string, mime: string) {
+/** Hands a generated file to the user: a browser download, or the share sheet in the app shell. */
+export async function download(filename: string, text: string, mime: string): Promise<void> {
+  if (isNative) return nativeShareFile(filename, text)
   const url = URL.createObjectURL(new Blob([text], { type: mime }))
   const a = document.createElement('a')
   a.href = url

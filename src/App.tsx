@@ -13,6 +13,7 @@ import { Stats } from './features/stats/Stats'
 import { Today } from './features/today/Today'
 import { saveBackup } from './lib/backup'
 import { getT, useT } from './lib/i18n'
+import { setNativeBarStyle } from './lib/native'
 import { startReminderLoop } from './lib/notifications'
 import { navigate, parseRoute, tabOf, useHash, type Route, type TabId } from './lib/router'
 import { getData, useStore } from './store/store'
@@ -36,6 +37,7 @@ function useTheme() {
     const root = document.documentElement
     const apply = () => {
       const theme = pref === 'system' ? (media.matches ? 'dark' : 'light') : pref
+      setNativeBarStyle(theme)
       if (root.dataset.theme === theme) return
       root.classList.add('theme-switching')
       root.dataset.theme = theme

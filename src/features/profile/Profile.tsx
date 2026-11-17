@@ -1,9 +1,10 @@
 import { Archive, Bell, ChevronRight, Database, Download, FileSpreadsheet, History, Plus, Trash2, Upload } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { clearBackups, download, listBackups, logsToCsv, saveBackup, serialize } from '../../lib/backup'
 import { fmtDay, fmtTime } from '../../lib/format'
 import { useLang, useT } from '../../lib/i18n'
-import { permissionState, requestPermission, sendTestNotification } from '../../lib/notifications'
+import { isNative } from '../../lib/native'
+import { permissionState, queryPermission, requestPermission, sendTestNotification } from '../../lib/notifications'
 import { navigate } from '../../lib/router'
 import { getData, useStore, useToday } from '../../store/store'
 import type { Lang, ThemePref } from '../../store/types'
@@ -23,6 +24,9 @@ export function Profile() {
   const ask = useUi((s) => s.ask)
   const [backups, setBackups] = useState(listBackups)
   const [permission, setPermission] = useState(permissionState)
+  useEffect(() => {
+    void queryPermission().then(setPermission)
+  }, [])
   const n = settings.notifications
   const setN = (patch: Partial<typeof n>) => updateSettings({ notifications: { ...n, ...patch } })
   const zone = Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -45,10 +49,12 @@ export function Profile() {
     if (result === 'granted') toast(t.profile.notifyOn)
   }
 
-  const exportJson = () => {
-    download(`dayflow-${today}.json`, serialize(getData()), 'application/json')
-    toast(t.profile.exported)
-  }
+  const save = (filename: string, text: string, mime: string) =>
+    download(filename, text, mime).then(
+      () => !isNative && toast(t.profile.exported),
+      () => toast(t.profile.exportFailed),
+    )
+  const exportJson = () => save(`dayflow-${today}.json`, serialize(getData()), 'application/json')
 
   return (
     <main className="page">
@@ -115,7 +121,7 @@ export function Profile() {
             </Row>
           )}
         </div>
-        <p className="note section-note">{t.profile.notifyNote}</p>
+        <p className="note section-note">{isNative ? t.profile.notifyNoteNative : t.profile.notifyNote}</p>
       </section>
 
       <section className="section">
@@ -152,10 +158,7 @@ export function Profile() {
             label={t.profile.exportCsv}
             hint={t.profile.exportCsvHint}
             icon={FileSpreadsheet}
-            onClick={() => {
-              download(`dayflow-habits-${today}.csv`, '﻿' + logsToCsv(getData()), 'text/csv;charset=utf-8')
-              toast(t.profile.exported)
-            }}
+            onClick={() => save(`dayflow-habits-${today}.csv`, '﻿' + logsToCsv(getData()), 'text/csv;charset=utf-8')}
           />
           <Row label={t.profile.import} hint={t.profile.importHint} icon={Upload} onClick={() => importFromFile(true)} />
           <Row label={t.archive.title} icon={Archive} onClick={() => navigate('archive')}>

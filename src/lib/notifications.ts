@@ -3,6 +3,7 @@ import { toast } from '../store/ui'
 import { timeToMinutes, todayKey } from './dates'
 import { fmtTime } from './format'
 import { getT } from './i18n'
+import { isNative, nativePermission, nativeTestNotification, type Permission } from './native'
 import { doneOn, isDueOn } from './schedule'
 import { reminderOccursOn } from './select'
 
@@ -12,10 +13,13 @@ const GRACE_MIN = 15
 
 export const notificationsSupported = (): boolean => typeof window !== 'undefined' && 'Notification' in window
 
-export const permissionState = (): NotificationPermission | 'unsupported' =>
-  notificationsSupported() ? Notification.permission : 'unsupported'
+export const permissionState = (): Permission => (notificationsSupported() ? Notification.permission : 'unsupported')
 
-export async function requestPermission(): Promise<NotificationPermission | 'unsupported'> {
+/** Current permission; in the app shell this asks the system, in a browser the Notification API. */
+export const queryPermission = (): Promise<Permission> => (isNative ? nativePermission(false) : Promise.resolve(permissionState()))
+
+export async function requestPermission(): Promise<Permission> {
+  if (isNative) return nativePermission(true)
   if (!notificationsSupported()) return 'unsupported'
   if (Notification.permission !== 'default') return Notification.permission
   try {
@@ -106,6 +110,8 @@ function tick() {
 
 /** Checks for due reminders while the app is open. Returns a stop function. */
 export function startReminderLoop(): () => void {
+  // The app shell schedules real system notifications instead (see native.ts).
+  if (isNative) return () => {}
   tick()
   const id = setInterval(tick, 20_000)
   const onVisible = () => document.visibilityState === 'visible' && tick()
@@ -117,6 +123,7 @@ export function startReminderLoop(): () => void {
 }
 
 export const sendTestNotification = () => {
+  if (isNative) return void nativeTestNotification().catch(() => {})
   const t = getT()
   void show('Dayflow', t.notify.test, 'test')
 }

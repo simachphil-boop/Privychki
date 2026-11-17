@@ -1963,7 +1963,7 @@
   display: flex;
   justify-content: center;
   min-height: 100dvh;
-  padding: calc(env(safe-area-inset-top) + var(--s6)) var(--s6) calc(env(safe-area-inset-bottom) + var(--s6));
+  padding: calc(var(--safe-area-inset-top, env(safe-area-inset-top)) + var(--s6)) var(--s6) calc(var(--safe-area-inset-bottom, env(safe-area-inset-bottom)) + var(--s6));
 }
 
 .onb__inner {
